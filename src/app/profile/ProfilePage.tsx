@@ -1,22 +1,29 @@
+
 import Image from "next/image";
 import React from "react";
 import avatarPlaceholder from "@/assets/avatar_placeholder.png";
 import { redirect } from "next/navigation";
-import { User } from "next-auth";
+import prisma from "@/lib/prisma";
+import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-interface ProfileProps {
-  user: User;
-}
+export default async function ProfilePage() {
+  const session = await auth();
+  const userId = session?.user?.id;
 
-const mockExperiences = [
-  "Internship at Company A",
-  "Research Assistant at Lab B",
-  "Volunteer at Organization C",
-];
+  if (!userId) {
+    redirect("/api/auth/signin?callbackUrl=/profile");
+  }
 
-export default async function ProfilePage({ user }: ProfileProps) {
+  // Fetch the user and their experiences
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    include: {
+      Experience: true, // Assuming the relation field is named 'experiences'
+    },
+  });
+
   if (!user) {
     redirect("/api/auth/signin?callbackUrl=/profile");
   }
@@ -38,13 +45,24 @@ export default async function ProfilePage({ user }: ProfileProps) {
           <p className="text-gray-600">Graduation Year: {user.year}</p>
           <div className="mt-6 w-full">
             <h2 className="text-xl font-semibold mb-2">Experiences</h2>
-            <ul className="list-disc list-inside mb-4">
-              {mockExperiences.map((exp, index) => (
-                <li key={index} className="text-gray-600">
-                  {exp}
-                </li>
-              ))}
-            </ul>
+            {user.Experience.length > 0 ? (
+              <ul className="list-disc list-inside mb-4">
+                {user.Experience.map((exp) => (
+                  <li key={exp.id} className="text-gray-600 mb-2">
+                    <strong>{exp.position}</strong> at <strong>{exp.company}</strong>
+                    <p className="text-sm text-gray-500">
+                      {new Date(exp.startDate).toLocaleDateString()} -{" "}
+                      {new Date(exp.endDate).toLocaleDateString()}
+                    </p>
+                    {exp.description && <p>{exp.description}</p>}
+                    {exp.rating && <p>Rating: {exp.rating}/5</p>}
+                    {exp.compensation && <p>Compensation: ${exp.compensation}</p>}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-600">No experiences added yet.</p>
+            )}
             <div className="flex justify-between">
               <Button className="bg-blue-500 text-white hover:bg-blue-600">
                 <Link href="/edit-profile">Edit Profile</Link>
