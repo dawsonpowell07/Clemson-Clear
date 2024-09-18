@@ -20,12 +20,8 @@ import { User } from "next-auth";
 import { useSession } from "next-auth/react";
 
 interface SettingPageProps {
-  user: User & {
-    gpa?: string;
-    major?: string;
-    year?: string;
+  user: User;
   };
-}
 
 export default function SettingsPage({ user }: SettingPageProps) {
   const { toast } = useToast();
@@ -35,7 +31,7 @@ export default function SettingsPage({ user }: SettingPageProps) {
     resolver: zodResolver(updateProfileSchema),
     defaultValues: {
       name: user.name || "",
-      gpa: user.gpa || "",
+      gpa: user.gpa !== null && user.gpa !== undefined ? String(user.gpa) : "",
       major: user.major || "",
       year: user.year || "",
     },
@@ -43,12 +39,7 @@ export default function SettingsPage({ user }: SettingPageProps) {
 
   async function onSubmit(data: UpdateProfileValues) {
     try {
-      const formData = {
-        ...data,
-        gpa: data.gpa ? String(data.gpa) : undefined, // Ensure GPA is a string
-      };
-
-      await updateProfile(formData);
+      await updateProfile(data);
       toast({ description: "Profile updated." });
       session?.update();
     } catch (error) {

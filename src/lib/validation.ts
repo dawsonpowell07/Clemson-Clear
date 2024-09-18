@@ -2,7 +2,12 @@ import { z } from "zod";
 
 export const updateProfileSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  gpa: z.string().optional(), // Adjust validation as needed
+  gpa: z
+    .string()
+    .optional()
+    .refine((val) => !val || !isNaN(parseFloat(val)), {
+      message: "GPA must be a number",
+    }),
   major: z.string().optional(),
   year: z.string().optional(),
 });

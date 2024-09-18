@@ -10,22 +10,20 @@ export async function updateProfile(values: UpdateProfileValues) {
   const userId = session?.user?.id;
 
   if (!userId) {
-    throw Error("Unauthorized");
+    throw new Error("Unauthorized");
   }
 
   const { name, gpa, major, year } = updateProfileSchema.parse(values);
 
   await prisma.user.update({
-    where: {
-      id: userId
-    },
+    where: { id: userId },
     data: {
       name,
-      gpa: gpa ? parseFloat(gpa) : undefined, // Convert GPA to number if it's provided
+      gpa: gpa ? parseFloat(gpa) : undefined,
       major,
       year,
-    }
+    },
   });
 
-  revalidatePath("/");
+  revalidatePath("/settings");
 }
