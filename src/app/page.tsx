@@ -3,6 +3,8 @@ import MaxWidthWrapper from "../components/MaxWidthWrapper";
 import Link from "next/link";
 import { GraduationCap, Network, Search } from "lucide-react";
 import getSession from '@/lib/getSession'
+import { SignInButton } from "@/components/NavBar";
+import { GetStartedButton } from "@/components/GetStartedButton";
 
 const perks = [
   {
@@ -34,7 +36,7 @@ export default async function Home() {
       <MaxWidthWrapper className="flex-grow flex flex-col items-center justify-center text-center">
         <section className="my-12">
           <h1 className="text-4xl font-bold mb-6 text-black">
-            Welcome to ClemsonClear
+            Welcome to Clemson Clear
           </h1>
           <p className="text-lg mb-12 text-gray-900">
             Connect with peers, explore job and internship opportunities, and
@@ -66,12 +68,7 @@ export default async function Home() {
             </Button>
           </div> : 
           <div className="flex flex-col items-center space-y-4 mt-12">
-            <Button className="px-8 py-4 text-xl">
-              <Link href="/sign-up">Sign Up Now</Link>
-            </Button>
-            <Button variant="link">
-              <Link href="/login">Or log in here</Link>
-            </Button>
+            <GetStartedButton />
           </div>
           } 
         </section>
@@ -79,3 +76,5 @@ export default async function Home() {
     </div>
   );
 }
+
+

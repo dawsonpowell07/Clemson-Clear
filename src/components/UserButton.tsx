@@ -1,5 +1,5 @@
 import avatarPlaceholder from "@/assets/avatar_placeholder.png";
-import { Lock, LogOut, Settings } from "lucide-react";
+import { Lock, LogOut, CircleUser, UserPen } from "lucide-react";
 import { User } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
@@ -37,10 +37,16 @@ export default function UserButton({ user }: UserButtonProps) {
         <DropdownMenuLabel>{user.name || "User"}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+        <DropdownMenuItem asChild>
+            <Link href="/profile">
+              < CircleUser className="mr-2 h-4 w-4" />
+              <span>My Profile</span>
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/settings">
-              <Settings className="mr-2 h-4 w-4" />
-              <span>Settings</span>
+            <Link href="/edit-profile">
+              <UserPen className="mr-2 h-4 w-4" />
+              <span>Edit Profile</span>
             </Link>
           </DropdownMenuItem>
           {user.role == "admin" && (

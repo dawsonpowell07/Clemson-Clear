@@ -20,7 +20,7 @@ export default function NavBar() {
   );
 }
 
-function SignInButton() {
+export function SignInButton() {
   return (
       <Button onClick={() => signIn()}>Sign In</Button>
   );

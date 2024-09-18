@@ -6,5 +6,8 @@ declare module "next-auth" {
     }
     interface User {
         role: String | null
+        gpa?: number | null;
+        major?: string | null;
+        year?: string | null;
     }
 }

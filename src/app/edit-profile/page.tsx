@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import getSession from '@/lib/getSession'
 
 export const metadata: Metadata = {
-  title: "Settings",
+  title: "edit-profile",
 };
 
 export default async function Page() {
