@@ -6,3 +6,5 @@ Display: Allow users to see other users experiences
 Search & Filter: Allows users to search for specific internships
 Rating System: Users can rate internships based on work-life balance, learning opportunities, and overall satisfaction.
 Anonymous Sharing: Option to submit experiences anonymously to maintain privacy.
+
+feel free to explore the site here: https://clemson-clear.vercel.app/ (be mindful that this is a work in progress and not many features have been implemented yet).
